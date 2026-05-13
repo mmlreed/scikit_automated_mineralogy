@@ -1,0 +1,17 @@
+name: Reed_etal_2024_GIMDS
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - ipython
+  - numpy
+  - pandas
+  - matplotlib-base
+  - scikit-learn
+  - opencv
+  - rasterio
+  - geopandas
+  - shapely
+  - pickleshare
+  - cmcrameri

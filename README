@@ -1,0 +1,78 @@
+1) For Python, since it can turn into a complete mess of twisted dependencies, I recommend downloading an environment manager like Anaconda.
+The included environment.yml file has all the requirements needed to run the Python scripts. 
+
+conda env create -f environment.yml 
+
+You need to be in the directory with the file to do this or type in the full path to the environment.yml file. This creates
+an environment called Reed_etal_2024_GIMDS. The environment comes with all the packages needed to run the scripts.
+
+conda activate Reed_etal_2024_GIMDS
+
+This activates that environment. For ease, I'd recommend using Spyder or some other IDE with an IPython console built in. Or, you can run from the anaconda prompt/shell:
+
+ipython
+
+This should give you a standalone IPython prompt. Run %cd <insert directory to unzipped archive here>. This sets your working directory.
+
+2) The .py files are scripts and run using the IPython console. There are scripts associated with calculations and visualizations and those associated with the scikit-learn random forest testing of different things (hyperparameter optimization and feature importance) not available in Orfeo Toolbox version of random forest. 
+
+The first file to run is the abundance calculator:
+
+%run -i abundance.py
+
+The -i flag stands for interactive (i.e., the file can access stored workspace variables). Next, run the f1_score calculator:
+
+%run -i f1_scores.py
+
+Then you can run the abundance plot:
+
+%run -i abun_plot.py
+
+Next, 
+
+%run -i manual_vs_test.py
+
+to produce Figure 4, which shows predicted versus manually mapped mineral abundance for the three thin sections with manual maps.
+It is slightly different than the manuscript as colors where changed in Affinity Designer.
+
+Make sure to decompress the four_plot_bio.7z using 7zip (free to download @ https://www.7-zip.org/download.html; a .zip file with the same contents would 20x larger in size). 
+This extracts a pickle file, four_plot_bio.pkl. 
+
+You could use the ipython '%reset magic' command to clear away the workspace before loading this >150 MB pickle file as it requires no previous variables. 
+
+%run -i four_plot_bio.py
+
+This plots up some biotite properties for the Figure 7 in the discussion section.
+
+3) The next part is running the scikit-learn based random forest classifier on our three samples with test maps. First, in each sample directory 1_13a, 6_3a, and 16_2a 
+decompress the .7z files containing the 7-pixel radius mean-filtered elemental intensity rasters (e.g., 6_3a_intensity.7z). Next in IPython, run
+
+%run -i extract_values.py
+
+This generates training data in the proper form for scikit-learn using the provided training polygons. The training data is ~100 MB, so I don't include it in this already voluminous archive. 
+It may take a few minutes to do this.
+
+Next, run
+
+%run -i rf.py
+
+to train the random forest models in scikit-learn. This also prints out classification reports for each sample. 
+
+Next,
+
+%run -i feature_importance.py
+
+to obtain feature importance from the trained models and plot them (Figure 5). This may take a few minutes.
+
+Next,
+
+%run -i randomcv.py
+
+to do the cross-validation hyperparameter optimization. This will several hours most likely on a decently fast computer; you can speed it up by changing the n_jobs flag to something higher. 
+The best-scoring hyperparameters for each sample will be the output.
+
+
+
+
+
+
